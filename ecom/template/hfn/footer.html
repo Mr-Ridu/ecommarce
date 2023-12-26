@@ -1,0 +1,126 @@
+{% load static %}
+
+
+<footer class="bg-dark text-light py-4">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4">
+        <h5>About Noiya Bazar</h5>
+        <p>At Noiya Bazar, we are committed to providing the best shopping experience for our customers. Explore a wide
+          range of products and enjoy hassle-free online shopping.</p>
+      </div>
+      <div class="col-md-4">
+        <h5>Contact Us</h5>
+        <p>Email: info@noiyabazar.com</p>
+        <p>Phone: +1 (123) 456-7890</p>
+        <p>Address: Shohid Miner, Netrakona, Bangladesh</p>
+      </div>
+      <div class="col-md-4">
+        <h5>Follow Us</h5>
+        <ul class="list-inline">
+          <li class="list-inline-item"><a href="#" target="_blank" class="text-light"><i class="fab fa-facebook"></i>
+              Facebook</a></li>
+          <li class="list-inline-item"><a href="#" target="_blank" class="text-light"><i class="fab fa-twitter"></i>
+              Twitter</a></li>
+          <li class="list-inline-item"><a href="#" target="_blank" class="text-light"><i class="fab fa-instagram"></i>
+              Instagram</a></li>
+          <li class="list-inline-item"><a href="#" target="_blank" class="text-light"><i class="fab fa-pinterest"></i>
+              Pinterest</a></li>
+        </ul>
+      </div>
+    </div>
+    <hr>
+    <div class="text-center">
+      <p>&copy; 2023 Noiya Bazar. All rights reserved.</p>
+      <p><small>Designed and developed by Ridu</small></p>
+    </div>
+  </div>
+</footer>
+<!-- footern end -->
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+{% if messages %}
+{% for message in messages %}
+<script>
+  Swal.fire({
+    position: 'top-end',
+    icon: '{{ message.tags }}', // Use the message tags to set the icon (e.g., success, error, info)
+    title: '{{ message }}',
+    showConfirmButton: false,
+    timer: 1500
+  });
+</script>
+{% endfor %}
+{% endif %}
+
+<script>
+  // Function to open the buy popup
+  function openBuyPopup() {
+    var popup = document.getElementById("buyPopup");
+    popup.style.display = "block";
+  }
+
+  // Function to close the buy popup
+  function closeBuyPopup() {
+    var popup = document.getElementById("buyPopup");
+    popup.style.display = "none";
+  }
+
+  // Function to handle the buy action
+  function buyProduct() {
+    // Add your code here to handle the buy action (e.g., perform purchase, show success message, etc.)
+    // After processing the buy action, close the popup:
+    closeBuyPopup();
+  }
+
+</script>
+
+
+
+<!-- for vendor profile -->
+<script> 
+  const links = document.querySelectorAll('.list-group-item-action');
+  const sections = {
+      'vendor_profile': document.getElementById('vendor_profile'),
+      'add_product': document.getElementById('add_product'),
+      'settings': document.getElementById('settings'),
+  };
+  
+  links.forEach(link => {
+      link.addEventListener('click', function() {
+          const target = this.getAttribute('data-target');
+          for (const section in sections) {
+              sections[section].style.display = section === target ? 'block' : 'none';
+          }
+          links.forEach(link => link.classList.remove('active'));
+          this.classList.add('active');
+      });
+  });
+</script>
+
+<!-- for increment and decrement -->
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+      const decrementButton = document.querySelector(".btn-decrement");
+      const incrementButton = document.querySelector(".btn-increment");
+      const inputStock = document.querySelector(".input-stock");
+  
+      decrementButton.addEventListener("click", function() {
+          const currentValue = parseInt(inputStock.value);
+          if (currentValue > 0) {
+              inputStock.value = currentValue - 1;
+          }
+      });
+  
+      incrementButton.addEventListener("click", function() {
+          const currentValue = parseInt(inputStock.value);
+          inputStock.value = currentValue + 1;
+      });
+  });
+  </script>

@@ -1,0 +1,112 @@
+{% extends 'themain.html' %}
+{% load static %}
+{% static 'product_picture' as baseURL %}
+{% block title %}Puches{% endblock%}
+{% block content %}
+
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-md-8">
+      <div class="radio-container">
+        <input type="radio" id="returning-user" name="checkout-option" checked>
+        <label for="returning-user">Already Have an Account (Returning User)</label>
+      </div>
+
+      <div class="radio-container">
+        <input type="radio" id="guest-user" name="checkout-option">
+        <label for="guest-user">Continue as a Guest User (No Login Required)</label>
+      </div>
+      <div class="row mt-5">
+        <div class="col-md-12">
+          <h3>Please fill in the fields below and place an order to complete your purchase!</h3>
+        
+          <form method="post">
+            {% csrf_token %}
+            <!-- Hidden input fields to pass the buyProduct id and name to the form -->
+            <input type="number" class="form-control" name="PPid" value="{{ buyProduct.id }}" hidden>
+            <input type="text" class="form-control" name="PPname" value="{{ buyProduct.Pvendorname }}" hidden>
+            <input type="text" class="form-control"  name="username"  value="{{request.user}}" hidden>
+            <div class="col-md-6">
+                <label for="mobileNumber" class="form-label">Quantity</label>
+                <input type="number" class="form-control" id="mobileNumber" name="quantity" required>
+            </div>
+            <h4>Billing Details</h4>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label for="firstName" class="form-label">First Name</label>
+                    <input type="text" class="form-control" id="firstName" name="Pfirstname" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="lastName" class="form-label">Last Name</label>
+                    <input type="text" class="form-control" id="lastName" name="Plastname" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="mobileNumber" class="form-label">Mobile Number</label>
+                    <input type="number" class="form-control" id="mobileNumber" name="Pmobile" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="email" name="Pemail" required>
+                </div>
+                <div class="col-12">
+                    <label for="address" class="form-label">Address</label>
+                    <input type="text" class="form-control" id="address" name="Padderss" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="zipCode" class="form-label">Zip Code</label>
+                    <input type="text" class="form-control" id="zipCode" name="Pzipcode" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="division" class="form-label">Division</label>
+                    <input type="text" class="form-control" id="division" name="Pdivision" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="city" class="form-label">City</label>
+                    <input type="text" class="form-control" id="city" name="Pcity" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="area" class="form-label">Area</label>
+                    <input type="text" class="form-control" id="area" name="Parea" required>
+                </div>
+                
+                <div class="col-12">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="shipToDifferentAddress">
+                        <label class="form-check-label" for="shipToDifferentAddress">
+                            Ship to a different address?
+                        </label>
+                    </div>
+                </div>
+            </div>
+        
+            <h4 class="mt-4">Payment Method</h4>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="Pdeliverytyp" id="cashOnDelivery" value="cashOnDelivery" required>
+                <label class="form-check-label" for="cashOnDelivery">
+                    Cash On Delivery
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="Pdeliverytyp" id="digitalPayment" value="digitalPayment" required>
+                <label class="form-check-label" for="digitalPayment">
+                    Digital Payment (Debit/credit card)
+                </label>
+            </div>
+        
+            <button type="submit" class="btn btn-primary mt-3">Place Order</button>
+        </form>
+        
+
+        </div>
+      </div>
+
+    </div>
+    <div class="col-md-4">
+      its 6
+    </div>
+  </div>
+</div>
+
+
+{% endblock%}
+

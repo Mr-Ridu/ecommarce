@@ -1,0 +1,64 @@
+{% extends 'themain.html' %}
+{% load static %}
+{% static "product_picture" as baseUrl %}
+{% block title %} Product Details {% endblock %}
+
+{% block content %}
+<section>
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-6">
+                <img src="/media/{{BASIC_DIR}}/{{itemdetails.Ppicture}}" class="product-image" style="width: 100%;"
+                    alt="Product Image">
+            </div>
+            <div class="col-md-6">
+                <h2 class="product-title">{{itemdetails.Pname}}</h2>
+                <p class="product-description">
+                    {{itemdetails.Pdesc}}
+                </p>
+                <p class="product-price"><strong>Price: </strong>${{itemdetails.Pprice}}</p>
+                <p class="product-stock"><strong>Availability: </strong>{% if itemdetails.Pstock > 0 %}
+                    In Stock {% else %}
+                    Out of Stock {% endif %} ({{itemdetails.Pstock}} pieces)</p>
+                <p class="product-mall"><strong>Mall Name: </strong>{{itemdetails.Pmallname}}</p>
+                <div class="product-buttons">
+                    <a href="{% url 'addtocart' itemdetails.id %}" class="btn btn-primary"><i
+                            class="fas fa-shopping-cart"></i> Add to Cart</a>
+                    {% if itemdetails.Pstock > 0 %}
+                    <button class="btn btn-success" onclick="openBuyPopup()"><i class="fas fa-money-bill"></i> Buy
+                        Now</button>
+                    {% else %}
+                    <button class="btn btn-success" disabled><i class="fas fa-money-bill"></i> Out of Stock</button>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Popup -->
+
+            <div class="popup" id="buyPopup">
+                <div class="popup-content">
+                    <h2>Confirm Purchase</h2>
+                    <p>Are you sure you want to buy this product?</p>
+                    <div class="quantity-container">
+                        <label for="qn">Quantity</label>
+                        <div class="input-group input-group-sm mb-2" id="qn">
+                            <button type="button" class="btn btn-secondary btn-decrement">-</button>
+                            <input type="number" name="stock" class="form-control form-control-sm input-stock" min="1"
+                                value="1">
+                            <button type="button" class="btn btn-secondary btn-increment">+</button>
+                        </div>
+                        <div class="popup-buttons">
+                            <a href="{% url 'buy' itemdetails.id %}" class="btn btn-success" onclick="buyProduct()">Buy
+                                Now</a>
+
+                            <button class="btn btn-danger" onclick="closeBuyPopup()">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+</section>
+<br>
+
+{% endblock %}

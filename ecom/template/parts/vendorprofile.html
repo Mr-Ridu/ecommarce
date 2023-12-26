@@ -1,0 +1,161 @@
+{% extends 'themain.html' %}
+{% load static %}
+{% static "product_picture" as baseUrl %}
+{% block title %} home {% endblock %}
+
+{% block content %}
+
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-2">
+            <div class="list-group">
+                <a href="#vendor_profile" class="list-group-item list-group-item-action"><i class="fas fa-user"></i>
+                    Vendor Profile</a>
+                <a href="#add_product" class="list-group-item list-group-item-action"><i class="fas fa-plus"></i> Add
+                    Product</a>
+                <a href="#orders" class="list-group-item list-group-item-action"><i class="fas fa-list-ul"></i> Orders
+                    {%if msg %}<sup style="color: red;">{{ msg.count}}</sup>{%endif%}</a>
+                <a href="#settings" class="list-group-item list-group-item-action"><i class="fas fa-cog"></i>
+                    Settings</a>
+                <a href="{% url 'logout' %}" class="list-group-item list-group-item-action"><i
+                        class="fas fa-sign-out-alt"></i> Logout</a>
+            </div>
+        </div>
+        <div class="col-md-10">
+            <div id="#vendor_profile">
+                {% if vendors_product %}
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Product Name</th>
+                            <th>Product Picture</th>
+                            <th>Description</th>
+                            <th>Price</th>
+                            <th>Stock</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for product in vendors_product %}
+                        <tr>
+                            <td>{{ product.Pname }} <br> <i>{{product.product_code }}</i></td>
+                            <td> <img style="height: 60px;width:100%;" src="/media/{{BASIC_DIR}}/{{ product.Ppicture }}"
+                                    alt=""></td>
+                            <td>{% if product.Pdesc|wordcount > 15 %}
+                                {{ product.Pdesc|slice:":15" }}...
+                                {% else %}
+                                {{ product.Pdesc }}
+                                {% endif %}
+
+                            </td>
+                            <td>{{ product.Pprice }}</td>
+                            <td>
+                                <form method="post" action="{% url 'update_stock' product.id %}">
+                                    {% csrf_token %}
+                                    <div class="row">
+                                        <div class="col-4">
+                                            {{product.Pstock}}
+                                        </div>
+                                        <div class="col-8">
+                                            <div class="input-group input-group-sm mb-2">
+                                                <button type="button" class="btn btn-secondary btn-decrement">-</button>
+                                                <input type="number" name="stock"
+                                                    class="form-control form-control-sm input-stock">
+                                                <button type="button" class="btn btn-secondary btn-increment">+</button>
+                                            </div>
+                                       
+                                        <button type="submit" class="btn btn-success btn-sm">Update Stock</button>
+ </div>
+                                    </div>
+
+                                </form>
+                            <td>
+                                <a href="" class="btn btn-primary btn-sm">Edit</a>
+                                <a href="{% url 'delProduct' product.id %}" class="btn btn-danger btn-sm">Delete</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% endif %}
+            </div>
+            <hr>
+            <!-- -----addproduct---- -->
+            <div id="add_product">
+                <h2>Add Product</h2>
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="hidden" name="Pvendorname" value="{{request.user}}">
+                    <div class="mb-3">
+                        <label for="productName" class="form-label">Product Name</label>
+                        <input type="text" class="form-control" id="productName" name="Pname" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="productDescription" class="form-label">Product Description</label>
+                        <textarea class="form-control" id="productDescription" name="Pdesc" rows="4"
+                            required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="productPrice" class="form-label">Product Price</label>
+                        <input type="number" class="form-control" id="productPrice" name="Pprice" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="productPicture" class="form-label">Product Picture</label>
+                        <input type="file" class="form-control" id="productPicture" name="Ppicture" accept="image/*"
+                            required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="productStock" class="form-label">Product Stock</label>
+                        <input type="number" class="form-control" id="productStock" name="Pstock" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="mallName" class="form-label">Mall Name</label>
+                        <input type="text" class="form-control" id="mallName" name="Pmallname" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="productCategory" class="form-label">Product Category</label>
+                        <select class="form-select" id="productCategory" name="Pcatg" required>
+                            <option value="" disabled selected>Select a category</option>
+                            <option value="electronics">Electronics</option>
+                            <option value="clothing">Clothing</option>
+                            <option value="accessories">Accessories</option>
+                            <option value="home">Home</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary"><i class="fas fa-plus"></i> Add Product</button>
+                </form>
+            </div>
+            <hr>
+            <!-- --orders--- -->
+            <div id="orders" class="mt-4">
+                <h2>Orders</h2>
+
+                <div class="message-for-vendor">
+                    <h3>New Purchase</h3>
+                    {% for i in msg %}
+                    <p>
+
+                        <strong>Username:</strong> {{ i.username }}<br>
+                        <strong>Product quntity:</strong> {{ i.quantity }}<br>
+                        <strong>Product code:</strong> {{ i.product_code }}<br>
+                        <strong>Email:</strong> {{ i.Pemail }}<br>
+                        <strong>Purches Time</strong> {{ i.PurchesTime }}<br>
+                        <strong>Address:</strong> {{ i.Padderss }},{{i.Parea}},{{i.Pzipcode}},{{i.Pcity}},{{i.Pdivision}}
+
+                    </p>
+                    <p>Dear vendor, you have a new order to process and deliver. Thank you for your prompt attention.
+                    </p>
+                    <a href="{% url 'confirmpurches' i.PPid i.quantity %}" class="btn btn-warning"> Confirm</a>
+                    {%endfor%}
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+{% endblock %}

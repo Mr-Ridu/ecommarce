@@ -1,0 +1,54 @@
+{% extends 'themain.html' %}
+{% load static %}
+{% static "cart_picture" as baseUrl %}
+{% block title %} Cart {% endblock %}
+
+{% block content %}
+
+
+{% if cartsproduct %}  
+<div class="container py-4">
+  <h1 class="text-center  mb-4">Your Shopping Cart</h1>
+  <div class="row">
+      <!-- Replace the following block with a loop over your cart items -->
+      {% for i in cartsproduct %}
+
+      <div class="col-md-3 mb-3">
+          <div class="card">
+              <img src="/media/{{ BASIC_DIR }}/{{ i.CPpicture }}" alt="Product 1" class="card-img-top">
+              <div class="card-body">
+                  <h5 class="card-title"> <a href="{% url 'product_details' i.ProductID %}"><b>{{ i.CPname }}</b></a></h5>
+
+                  <p class="card-text">${{i.CPrice}}</p>
+              </div>
+              <div class="card-footer">
+             <a class="btn btn-danger btn-sm" href="{% url 'removecart' i.id %}"><i class="fas fa-trash-alt"></i> Remove</a> 
+                  <button class="btn btn-success btn-sm float-end"><i class="fas fa-shopping-cart"></i> Buy</button>
+              </div>
+          </div>
+      </div>
+ {% endfor %}
+
+      <!-- End of cart items loop -->
+  </div>
+  <div class="row justify-content-end">
+      <div class="col-md-4">
+          <div class="text-end">
+              <h4>Total: ${{total_price}}</h4>
+          </div>
+      </div>
+  </div>
+  <!-- Show a message if the cart is empty -->
+  <!-- <div class="row">
+      <div class="col text-center">
+          <p>Your cart is empty.</p>
+      </div>
+  </div> -->
+</div>
+
+{% else %}
+ <h2 class="notingcarts">Nothing in Carts</h2>
+{% endif %}
+
+
+{% endblock content%}

@@ -1,0 +1,137 @@
+
+{% extends 'themain.html' %}
+{% load static %}
+{% static 'product_picture' as baseURL %}
+{% block title %}Search{% endblock%}
+{% block content %}
+
+{% if search_product_name or search_Pro_caat or  search_mall_name %}
+<section>
+    <div class="container mt-5">
+      <div class="row row-cols-1 row-cols-md-4 g-4">
+        {% for item in search_product_name %}
+        <div class="col-md-3">
+          <div class="card h-100 shadow">
+            <img src="/media/{{ BASIC_DIR }}/{{ item.Ppicture }}" class="card-img-top" alt="Product Image">
+            <div class="card-body">
+              <h5 class="card-title"> <a href="{% url 'product_details' item.id %}"><b>{{ item.Pname }}</b></a></h5>
+              {% if item.Pdesc|wordcount > 20 %}
+              <p class="card-text">{{ item.Pdesc|truncatewords:20 }}</p>
+              {% else %}
+              <p class="card-text">{{ item.Pdesc }}</p>
+              {% endif %}
+              <span class="card-text"><strong>Stock:</strong> {{ item.Pstock }} units</span>
+             | <span class="card-text"><strong>Price: $</strong> {{ item.Pprice }}</span>
+              <p class="card-text"><strong>Mall Name: </strong>{{ item.Pmallname }}</p>
+            </div>
+            <div class="card-footer text-center">
+              <div class="row justify-content-center">
+                <!-- Buy button -->
+                <div class="col-4">
+                  <button class="btn btn-primary  buy-btn" onclick="openBuyPopup()">Buy</button>
+                </div>
+                <!-- Cart button -->
+                <div class="col-8">
+                  <a href="{% url 'addtocart' item.id %}" class="btn btn-success btn-block"><i
+                      class="fas fa-shopping-cart"></i>Add to Cart</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+        <!-- catagory search -->
+        {% for item in search_Pro_caat %}
+        <div class="col-md-3">
+          <div class="card h-100 shadow">
+            <img src="/media/{{ BASIC_DIR }}/{{ item.Ppicture }}" class="card-img-top" alt="Product Image">
+            <div class="card-body">
+              <h5 class="card-title"> <a href="{% url 'product_details' item.id %}"><b>{{ item.Pname }}</b></a></h5>
+              {% if item.Pdesc|wordcount > 20 %}
+              <p class="card-text">{{ item.Pdesc|truncatewords:20 }}</p>
+              {% else %}
+              <p class="card-text">{{ item.Pdesc }}</p>
+              {% endif %}
+              <span class="card-text"><strong>Stock:</strong> {{ item.Pstock }} units</span>
+             | <span class="card-text"><strong>Price: $</strong> {{ item.Pprice }}</span>
+              <p class="card-text"><strong>Mall Name: </strong>{{ item.Pmallname }}</p>
+            </div>
+            <div class="card-footer text-center">
+              <div class="row justify-content-center">
+                <!-- Buy button -->
+                <div class="col-4">
+                  <button class="btn btn-primary  buy-btn" onclick="openBuyPopup()">Buy</button>
+                </div>
+                <!-- Cart button -->
+                <div class="col-8">
+                  <a href="{% url 'addtocart' item.id %}" class="btn btn-success btn-block"><i
+                      class="fas fa-shopping-cart"></i>Add to Cart</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+
+          <!-- Mall search -->
+          {% for item in search_mall_name %}
+          <div class="col-md-3">
+            <div class="card h-100 shadow">
+              <img src="/media/{{ BASIC_DIR }}/{{ item.Ppicture }}" class="card-img-top" alt="Product Image">
+              <div class="card-body">
+                <h5 class="card-title"> <a href="{% url 'product_details' item.id %}"><b>{{ item.Pname }}</b></a></h5>
+                {% if item.Pdesc|wordcount > 20 %}
+                <p class="card-text">{{ item.Pdesc|truncatewords:20 }}</p>
+                {% else %}
+                <p class="card-text">{{ item.Pdesc }}</p>
+                {% endif %}
+                <span class="card-text"><strong>Stock:</strong> {{ item.Pstock }} units</span>
+               | <span class="card-text"><strong>Price: $</strong> {{ item.Pprice }}</span>
+                <p class="card-text"><strong>Mall Name: </strong>{{ item.Pmallname }}</p>
+              </div>
+              <div class="card-footer text-center">
+                <div class="row justify-content-center">
+                  <!-- Buy button -->
+                  <div class="col-4">
+                    <button class="btn btn-primary  buy-btn" onclick="openBuyPopup()">Buy</button>
+                  </div>
+                  <!-- Cart button -->
+                  <div class="col-8">
+                    <a href="{% url 'addtocart' item.id %}" class="btn btn-success btn-block"><i
+                        class="fas fa-shopping-cart"></i>Add to Cart</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+              <!-- Popup -->
+              <div class="popup" id="buyPopup">
+                <div class="popup-content">
+                  <h2>Confirm Purchase</h2>
+                  <p>Are you sure you want to buy this product?</p>
+                  <div class="popup-buttons">
+                    <button class="btn btn-success" onclick="buyProduct()">Buy Now</button>
+                    <button class="btn btn-danger" onclick="closeBuyPopup()">Cancel</button>
+                  </div>
+                </div>
+              </div>
+      </div>
+    </div>
+  </section>
+  
+{% else %}
+<section>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6 text-center">
+                <h2>Sorry, Nothing Found!</h2>
+                <p>We couldn't find any products matching your search criteria.</p>
+                <p>Please try a different search term or explore our other products.</p>
+                <!-- You can add more visually appealing elements or images here -->
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+{% endblock %}
